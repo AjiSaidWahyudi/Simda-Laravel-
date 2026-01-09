@@ -1,0 +1,152 @@
+### REGISTER
+# POST http://localhost:8000/api/register
+# Content-Type: application/json
+
+# {
+#   "name": "Aji Said Wahyudi Hidayat",
+#   "username": "ajisaidwahyudi",
+#   "email": "ajisaidwahyudi@tes.com",
+#   "password": "Aswhaswh2595_"
+# }
+
+# -----------------------------------------
+
+## LOGIN
+# POST http://localhost:8000/api/login
+# Content-Type: application/json
+
+# {
+#   "username": "ajisaidwahyudi",
+#   "password": "Aswhaswh2595_"
+# }
+
+# -----------------------------------------
+
+## LUPA PASSWORD
+POST http://localhost:8000/api/forgot-password
+Content-Type: application/json
+
+{
+  "email": "ajisaid.wahyudi1@gmail.com"
+}
+
+# -----------------------------------------
+
+### Get inventaris
+GET http://127.0.0.1:8000/api/get_inventarisasi
+Accept: application/json
+
+# -----------------------------------------
+
+### Get total
+GET http://127.0.0.1:8000/api/get_total
+Accept: application/json
+
+# -----------------------------------------
+
+### Search inventaris - keyword jenis barang
+GET http://127.0.0.1:8000/api/inventarisasi/search?keyword=ht
+Accept: application/json
+
+# -----------------------------------------
+
+### Search inventaris - keyword ruangan
+GET http://127.0.0.1:8000/api/inventarisasi/search?keyword=ruang_kadis
+Accept: application/json
+
+# -----------------------------------------
+
+### STORE INVENTARISASI (with image)
+# POST http://localhost:8000/api/inventarisasi/store
+# Authorization: Bearer 2|Xur3FNm6bI9yDZw03gA56Xq2Dq9y5SQMWoOJwLCm1e03bb8c
+# Accept: application/json
+# Content-Type: multipart/form-data; boundary=boundary123
+
+# --boundary123
+# Content-Disposition: form-data; name="kartu_ruang_id"
+
+# 5
+# --boundary123
+# Content-Disposition: form-data; name="kode_barang"
+
+# BRG-001
+# --boundary123
+# Content-Disposition: form-data; name="kode_register"
+
+# REG-001
+# --boundary123
+# Content-Disposition: form-data; name="jenis_barang"
+
+# Komputer
+# --boundary123
+# Content-Disposition: form-data; name="merek_tipe"
+
+# Lenovo Thinkpad
+# --boundary123
+# Content-Disposition: form-data; name="no_seri"
+
+# SN001
+# --boundary123
+# Content-Disposition: form-data; name="bahan"
+
+# Metal
+# --boundary123
+# Content-Disposition: form-data; name="cara_perolehan"
+
+# Pembelian
+# --boundary123
+# Content-Disposition: form-data; name="tahun_beli"
+
+# 2023
+# --boundary123
+# Content-Disposition: form-data; name="ukuran"
+
+# 15
+# --boundary123
+# Content-Disposition: form-data; name="satuan"
+
+# inch
+# --boundary123
+# Content-Disposition: form-data; name="keadaan"
+
+# Baik
+# --boundary123
+# Content-Disposition: form-data; name="jumlah"
+
+# 1
+# --boundary123
+# Content-Disposition: form-data; name="harga"
+
+# 9000000
+# --boundary123
+# Content-Disposition: form-data; name="keterangan"
+
+# Laptop Tenaga Ahli
+# --boundary123
+# Content-Disposition: form-data; name="gambar"; filename="lenovo.jpg"
+# Content-Type: image/jpeg
+
+# < ./laptop.jpg
+# --boundary123--
+
+# -----------------------------------------
+
+### UPLOAD FOTO SAJA UNTUK INVENTARIS YANG SUDAH ADA
+# POST http://localhost:8000/api/inventarisasi/1/upload_foto
+# Authorization: Bearer 17|J8AiCdOwg9rSX3sl9OSVD0mSH3vl7w2OOVGLqkHN1be418c7
+# Accept: application/json
+# Content-Type: multipart/form-data; boundary=MyBoundary
+
+# --MyBoundary
+# Content-Disposition: form-data; name="gambar"; filename="genset.jpg"
+# Content-Type: image/jpeg
+
+# < ./genset.jpg
+# --MyBoundary--
+
+# -----------------------------------------
+
+### LOGOUT
+POST http://localhost:8000/api/logout
+Authorization: Bearer 70|XNaAXYKjQhHgT0lTAR9veVTKLzVZ5alq1ALqvtque0af5b2f
+Content-Type: application/json

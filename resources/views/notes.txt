@@ -1,0 +1,11 @@
+kolom khusus untuk kode barang rusak (v)
+tambah foto barang setiap inventaris (v)
+laporan ditarik per ruang, dengan template sendiri (KIR) (v)
+input barang lewat mobile (v)
+bikin hak akses admin (v)
+
+- adjustment bisa menginput lebih dari satu foto (v)
+- di kompres (satu foto tidak lebih dari 1 MB), maksimal 4 foto (belum di tes di mobile)
+- detail barang kurang nama ruangan (v)
+- tambah pemegang  barang (v)
+- BUKU INVENTARIS GABUNGAN -> Kartu Inventaris Ruangan (V)
