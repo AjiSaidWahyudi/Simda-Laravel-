@@ -1,0 +1,231 @@
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+    <meta charset="UTF-8">
+    <title>Register | SIMDA Barang</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+        /* Brand */
+        --blue-600: #2563EB;
+        --blue-800: #1E40AF;
+        --blue-100: #DBEAFE;
+
+        /* Neutral */
+        --white: #ffffff;
+        --black: #000000;
+
+        --slate-900: #0F172A;
+        --slate-700: #334155;
+        --slate-500: #64748B;
+        --slate-300: #CBD5E1;
+        --slate-100: #F1F5F9;
+
+        /* State */
+        --success: #22C55E;
+        --warning: #F59E0B;
+        --danger: #EF4444;
+        }
+
+        body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, var(--blue-800), var(--blue-600));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        }
+
+        .auth-wrapper {
+        max-width: 960px;
+        width: 100%;
+        background: var(--white);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 30px 60px rgba(0,0,0,.25);
+        }
+
+        /* LEFT */
+        .auth-left {
+        background: linear-gradient(135deg, var(--blue-600), var(--blue-800));
+        color: var(--white);
+        padding: 60px 50px;
+        position: relative;
+        }
+
+        .auth-left h2 {
+        font-weight: 700;
+        margin-bottom: 16px;
+        }
+
+        .auth-left p {
+        color: var(--blue-100);
+        line-height: 1.6;
+        }
+
+        .auth-left::after {
+        content: "";
+        position: absolute;
+        bottom: -60px;
+        left: -60px;
+        width: 220px;
+        height: 220px;
+        background: rgba(255,255,255,.12);
+        border-radius: 50%;
+        }
+
+        /* RIGHT */
+        .auth-right {
+        padding: 50px 50px;
+        }
+
+        .auth-right h4 {
+        font-weight: 700;
+        margin-bottom: 28px;
+        color: var(--blue-800);
+        text-align: center;
+        }
+
+        .form-control {
+        height: 48px;
+        border-radius: 12px;
+        border: 1px solid var(--slate-300);
+        }
+
+        .form-control:focus {
+        border-color: var(--blue-600);
+        box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+        }
+
+        .input-group-text {
+        background: var(--slate-100);
+        border: 1px solid var(--slate-300);
+        color: var(--slate-500);
+        }
+
+        .btn-primary {
+        height: 48px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--blue-600), var(--blue-800));
+        border: none;
+        font-weight: 600;
+        }
+
+        .btn-primary:hover {
+        opacity: .95;
+        }
+
+        .footer-text {
+        text-align: center;
+        font-size: 13px;
+        margin-top: 20px;
+        color: var(--slate-500);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+        .auth-left {
+            display: none;
+        }
+        .auth-right {
+            padding: 40px 30px;
+        }
+        }
+    </style>
+    </head>
+
+    <body>
+
+    <div class="auth-wrapper row g-0">
+
+    <!-- LEFT -->
+    <div class="col-md-6 auth-left d-flex flex-column justify-content-center">
+        <h2>Join SIMDA</h2>
+        <p>
+        Buat akun untuk mulai mengelola data inventaris
+        secara aman dan terintegrasi.
+        </p>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="col-md-6 auth-right">
+        <div class="text-center mb-4">
+        <img src="logo/logo_color.png" width="72" alt="Logo">
+        </div>
+
+        <h4>REGISTER AKUN</h4>
+
+        <form>
+        <!-- NAMA -->
+        <div class="mb-3">
+            <div class="input-group">
+            <span class="input-group-text">
+                <i class="bi bi-person-badge"></i>
+            </span>
+            <input type="text" class="form-control" placeholder="Nama Lengkap">
+            </div>
+        </div>
+
+        <!-- USERNAME -->
+        <div class="mb-3">
+            <div class="input-group">
+            <span class="input-group-text">
+                <i class="bi bi-person"></i>
+            </span>
+            <input type="text" class="form-control" placeholder="Username">
+            </div>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="mb-3">
+            <div class="input-group">
+            <span class="input-group-text">
+                <i class="bi bi-envelope"></i>
+            </span>
+            <input type="email" class="form-control" placeholder="Email">
+            </div>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="mb-3">
+            <div class="input-group">
+            <span class="input-group-text">
+                <i class="bi bi-lock"></i>
+            </span>
+            <input type="password" class="form-control" placeholder="Password">
+            </div>
+        </div>
+
+        <!-- KONFIRMASI -->
+        <div class="mb-4">
+            <div class="input-group">
+            <span class="input-group-text">
+                <i class="bi bi-lock-fill"></i>
+            </span>
+            <input type="password" class="form-control" placeholder="Konfirmasi Password">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+            DAFTAR
+        </button>
+        </form>
+
+        <div class="footer-text">
+        Sudah punya akun?
+        <a href="login.html" class="text-decoration-none fw-semibold">Login</a>
+        <br>
+        © 2025 SIMDA Barang — Pemerintah Kota Samarinda
+        </div>
+    </div>
+
+    </div>
+
+    </body>
+    </html>
