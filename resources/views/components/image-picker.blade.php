@@ -3,39 +3,46 @@
     'existing' => [],
 ])
 
-<div class="col-md-6">
+<div class="col-12">
     <label class="form-label">Foto Barang (maks. 4)</label>
 
+    {{-- Hidden input --}}
     <input
         type="file"
+        id="image-input"
         name="{{ $name }}"
         accept="image/*"
         multiple
-        class="form-control
-            {{ $errors->has(str_replace('[]','',$name)) || $errors->has(str_replace('[]','',$name).'.*') ? 'is-invalid' : '' }}"
-        onchange="previewMultipleImages(event)"
+        hidden
     >
 
-    @error(str_replace('[]','',$name))
-        <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-
-    @error(str_replace('[]','',$name).'.*')
-        <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
-
-<div class="col-md-12">
-    <label class="form-label d-block">Preview</label>
-
-    <div class="img-preview-wrapper d-flex gap-2 flex-wrap" id="preview-container">
-        {{-- existing images (edit) --}}
+    {{-- Preview Box --}}
+    <div
+        class="image-dropzone border rounded p-3 d-flex gap-2 flex-wrap"
+        onclick="document.getElementById('image-input').click()"
+    >
+        {{-- Existing images (edit) --}}
         @foreach ($existing as $img)
-            <img
-                src="{{ asset('gambar_barang/'.$img->inv_id.'/'.$img->gambar) }}"
-                class="img-preview rounded border"
-                width="120"
-            >
+            <div class="image-wrapper">
+                <img
+                    src="{{ asset('gambar_barang/'.$img->inv_id.'/'.$img->gambar) }}"
+                    class="preview-img"
+                >
+                <button
+                    type="button"
+                    class="remove-btn"
+                    onclick="removeExistingImage(this, event)"
+                >×</button>
+            </div>
         @endforeach
+
+        {{-- Add button --}}
+        <div class="add-image">
+            <span>+</span>
+        </div>
     </div>
+
+    @error(str_replace('[]','',$name))
+        <div class="text-danger mt-1">{{ $message }}</div>
+    @enderror
 </div>

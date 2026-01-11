@@ -11,7 +11,39 @@
     <div class="row g-4 mt-2">
         <div class="col-md-4 text-center">
             <div class="detail-media">
-                <img src="{{ asset('gambar_barang/'.$inventarisasi->gambar) }}" alt="Foto Barang" class="detail-image mb-3">
+                <div class="image-carousel">
+                    @php
+                        $images = $inventarisasi->gambar_inv;
+                    @endphp
+
+                    @if ($images->count())
+                        <div class="carousel-wrapper">
+                            @foreach ($images as $index => $img)
+                                <img
+                                    src="{{ asset('gambar_barang/'.$img->inv_id.'/'.$img->gambar) }}"
+                                    class="carousel-image {{ $index === 0 ? 'active' : '' }}"
+                                    onclick="openImageZoom({{ $index }})"
+                                    style="cursor: zoom-in;"
+                                >
+                            @endforeach
+
+                            @if ($images->count() > 1)
+                                <button class="carousel-btn prev" onclick="prevImage()">‹</button>
+                                <button class="carousel-btn next" onclick="nextImage()">›</button>
+                            @endif
+                        </div>
+                        <div id="image-zoom-overlay" class="image-zoom-overlay" onclick="closeImageZoom()">
+                            <button class="zoom-close" onclick="closeImageZoom(event)">×</button>
+
+                            <button class="zoom-nav prev" onclick="zoomPrev(event)">‹</button>
+                            <button class="zoom-nav next" onclick="zoomNext(event)">›</button>
+
+                            <img id="zoomed-image" src="">
+                        </div>
+                    @else
+                        <div class="text-muted">Tidak ada foto</div>
+                    @endif
+                </div>
                 <p class="mb-1 fw-semibold">QR Code</p>
                 <img src="{{ asset('qr_codes/'.$inventarisasi->qr_code) }}" class="qr-image" alt="QR Code">
             </div>
@@ -79,7 +111,18 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="detail-item">
+                    @php
+                        $keadaan = strtolower($inventarisasi->keadaan);
+
+                        $keadaanClass = match ($keadaan) {
+                            'baik' => 'status-baik',
+                            'kurang baik' => 'status-kurang',
+                            'rusak berat' => 'status-rusak',
+                            default => 'status-default',
+                        };
+                    @endphp
+
+                    <div class="detail-item {{ $keadaanClass }}">
                         <span class="label">Keadaan</span>
                         <span class="value">{{ $inventarisasi->keadaan }}</span>
                     </div>

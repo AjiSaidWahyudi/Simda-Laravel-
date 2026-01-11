@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Inventarisasi;
 use App\Models\KartuRuang;
+use App\Models\GambarInv;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
+use App\Services\ImageService;
 
 class APIController extends Controller
 {
@@ -21,17 +23,14 @@ class APIController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6'
         ]);
-
         $user = User::create([
             'name' => $validated['name'],
             'username' => $validated['username'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password'])
         ]);
-
         // Tambahkan role default
         $user->assignRole('admin');
-
         return response()->json([
             'status' => true,
             'message' => 'Register berhasil',
@@ -45,19 +44,15 @@ class APIController extends Controller
             'username' => 'required',
             'password' => 'required'
         ]);
-
         $user = User::where('username', $request->username)->first();
-
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response()->json([
                 'status' => false,
                 'message' => 'Email atau password salah'
             ], 401);
         }
-
         // Generate token
         $token = $user->createToken('auth_token')->plainTextToken;
-
         return response()->json([
             'status' => true,
             'message' => 'Login berhasil',
@@ -175,9 +170,10 @@ class APIController extends Controller
     {
         $validated = $request->validate([
             'kartu_ruang_id' => 'required|exists:kartu_ruang,id',
-            'kode_barang' => 'required',
+            'kode_barang' => 'required|unique',
             'kode_register' => 'required',
             'jenis_barang' => 'required',
+            'nama_pemegang' => 'required',
             'merek_tipe' => 'required',
             'no_seri' => 'required',
             'bahan' => 'required',
@@ -187,53 +183,57 @@ class APIController extends Controller
             'satuan' => 'required',
             'keadaan' => 'required',
             'jumlah' => 'required',
-            'harga' => 'required',
+            'harga' => 'required|numeric',
             'keterangan' => 'required',
-            'gambar' => 'required|image|mimes:jpg,jpeg,png|max:2048'
+            'gambar' => 'required|array|max:4',
+            'gambar.*' => 'image|mimes:jpg,jpeg,png',
         ]);
 
-        // Upload foto barang
-        $fotoName = null;
+        // Simpan data utama (tanpa gambar)
+        $inventarisasi = Inventarisasi::create(
+            collect($validated)->except('gambar')->toArray()
+        );
 
-        if ($request->hasFile('gambar')) {
-            $fotoName = time() . '-' . $request->file('gambar')->getClientOriginalName();
-            $request->file('gambar')->move(public_path('gambar_barang'), $fotoName);
+        // Upload & kompres gambar
+        $files = $request->file('gambar');
+
+        $folderPath = public_path('gambar_barang/'.$inventarisasi->id);
+        if (!file_exists($folderPath)) {
+            mkdir($folderPath, 0777, true);
         }
 
-        $validated['gambar'] = $fotoName;
+        foreach ($files as $file) {
+            $namaFile = ImageService::compressImage($file, $folderPath);
 
-        // Create initial data
-        $inventarisasi = Inventarisasi::create($validated);
+            GambarInv::create([
+                'inv_id' => $inventarisasi->id,
+                'gambar' => $namaFile,
+            ]);
+        }
 
-        // Create QR folder
+        // Generate QR
         $qrPath = public_path('qr_codes');
         if (!file_exists($qrPath)) {
             mkdir($qrPath, 0777, true);
         }
 
-        // Generate QR
-        $qrFile = 'qr-' . $inventarisasi->id . '.png';
-        $qrUrl = route('inventarisasi.pdf', $inventarisasi->id);
+        $qrFile = 'qr-'.$inventarisasi->id.'.png';
+        $qrUrl  = route('inventarisasi.pdf', $inventarisasi->id);
 
-        QrCode::format('png')
-            ->size(300)
-            ->generate($qrUrl, $qrPath . '/' . $qrFile);
+        QrCode::format('png')->size(300)->generate($qrUrl, $qrPath.'/'.$qrFile);
 
-        $inventarisasi->update([
-            'qr_code' => $qrFile,
-        ]);
+        $inventarisasi->update(['qr_code' => $qrFile]);
 
         return response()->json([
-            'status' => true,
+            'status'  => true,
             'message' => 'Inventarisasi berhasil disimpan',
-            'data' => $inventarisasi
+            'data'    => $inventarisasi->load('gambar_inv'),
         ], 201);
     }
 
     public function show($id)
     {
-        $item = DB::table('inventarisasi')
-        ->join('kartu_ruang', 'inventarisasi.kartu_ruang_id', '=', 'kartu_ruang.id')
+        $item = Inventarisasi::join('kartu_ruang', 'inventarisasi.kartu_ruang_id', '=', 'kartu_ruang.id')
         ->select(
             'inventarisasi.*',
             'kartu_ruang.nama_ruangan as ruangan'
@@ -241,81 +241,119 @@ class APIController extends Controller
         ->where('inventarisasi.id', $id)
         ->first();
 
-    if (!$item) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Data tidak ditemukan'
-        ], 404);
-    }
+        if (!$item) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 404);
+        }
 
-    return response()->json([
-        'success' => true,
-        'data' => $item
-    ]);
+        // 🔹 ambil gambar berdasarkan inventarisasi_id
+        $gambar = GambarInv::where('inv_id', $id)->get();
+
+        // 🔹 tempelkan ke object item
+        $item->gambar = $gambar;
+
+        return response()->json([
+            'success' => true,
+            'data' => $item
+        ]);
+
     }
 
     public function update(Request $request, $id)
     {
         $inventarisasi = Inventarisasi::findOrFail($id);
 
-        // Validasi fleksibel: hanya field yang dikirim yang divalidasi
         $validated = $request->validate([
             'kartu_ruang_id' => 'sometimes|exists:kartu_ruang,id',
-            'gambar' => 'sometimes|image|mimes:jpg,jpeg,png|max:2048',
+            'nama_pemegang' => 'sometimes',
+
+            // gambar baru
+            'gambar' => 'sometimes|array|max:4',
+            'gambar.*' => 'image|mimes:jpg,jpeg,png|max:2048',
+
+            // gambar lama yang dihapus
+            'deleted_images' => 'sometimes|array',
+            'deleted_images.*' => 'exists:gambar_inv,id',
         ]);
 
         // =============================
-        // 1. Update gambar jika ada
+        // UPDATE DATA NON-GAMBAR
+        // =============================
+        $inventarisasi->update(
+            collect($validated)->except(['gambar', 'deleted_images'])->toArray()
+        );
+
+        // =============================
+        // HAPUS GAMBAR LAMA
+        // =============================
+        if ($request->filled('deleted_images')) {
+            foreach ($request->deleted_images as $imgId) {
+                $img = GambarInv::where('inv_id', $inventarisasi->id)
+                    ->where('id', $imgId)
+                    ->first();
+
+                if ($img) {
+                    $path = public_path("gambar_barang/{$img->inv_id}/{$img->gambar}");
+                    if (file_exists($path)) {
+                        unlink($path);
+                    }
+                    $img->delete();
+                }
+            }
+        }
+
+        // =============================
+        // TAMBAH GAMBAR BARU
         // =============================
         if ($request->hasFile('gambar')) {
 
-            // Hapus gambar lama jika ada
-            if ($inventarisasi->gambar && file_exists(public_path('gambar_barang/' . $inventarisasi->gambar))) {
-                unlink(public_path('gambar_barang/' . $inventarisasi->gambar));
+            $existingCount = $inventarisasi->gambar_inv()->count();
+            $newFiles = $request->file('gambar');
+
+            if (($existingCount + count($newFiles)) > 4) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Total gambar maksimal 4 per inventarisasi',
+                ], 422);
             }
 
-            $fotoName = time() . '-' . $request->file('gambar')->getClientOriginalName();
-            $request->file('gambar')->move(public_path('gambar_barang'), $fotoName);
+            $folderPath = public_path('gambar_barang/'.$inventarisasi->id);
+            if (!file_exists($folderPath)) {
+                mkdir($folderPath, 0777, true);
+            }
 
-            $validated['gambar'] = $fotoName;
+            foreach ($newFiles as $file) {
+                $namaFile = ImageService::compressImage($file, $folderPath);
+
+                GambarInv::create([
+                    'inv_id' => $inventarisasi->id,
+                    'gambar' => $namaFile,
+                ]);
+            }
         }
 
-        // Update field yang dikirim
-        $inventarisasi->update($validated);
-
-
         // =============================
-        // 2. Generate QR jika belum ada
+        // QR CODE (JIKA BELUM ADA)
         // =============================
-
         if (!$inventarisasi->qr_code) {
-
             $qrPath = public_path('qr_codes');
             if (!file_exists($qrPath)) {
                 mkdir($qrPath, 0777, true);
             }
 
-            $qrFile = 'qr-' . $inventarisasi->id . '.png';
-            $qrUrl = route('inventarisasi.pdf', $inventarisasi->id);
+            $qrFile = 'qr-'.$inventarisasi->id.'.png';
+            $qrUrl  = route('inventarisasi.pdf', $inventarisasi->id);
 
-            QrCode::format('png')
-                ->size(300)
-                ->generate($qrUrl, $qrPath . '/' . $qrFile);
-
-            $inventarisasi->update([
-                'qr_code' => $qrFile
-            ]);
+            QrCode::format('png')->size(300)->generate($qrUrl, $qrPath.'/'.$qrFile);
+            $inventarisasi->update(['qr_code' => $qrFile]);
         }
 
-
-
-        // =============================
-        // 3. Response
-        // =============================
         return response()->json([
-            'status' => true,
+            'status'  => true,
             'message' => 'Inventarisasi berhasil diperbarui',
-            'data' => $inventarisasi
+            'data'    => $inventarisasi->load('gambar_inv'),
         ], 200);
     }
 }

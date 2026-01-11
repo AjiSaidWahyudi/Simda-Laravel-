@@ -99,18 +99,22 @@
         {{-- GAMBAR --}}
         <div class="right">
             <div class="image-box">
-                @if($inv->gambar && file_exists(public_path('gambar_barang/'.$inv->gambar)))
-                    <img src="{{ public_path('gambar_barang/'.$inv->gambar) }}" alt="Foto Barang">
+                @if($inv->gambar_inv->count())
+                    @foreach($inv->gambar_inv as $img)
+                        <img
+                            src="{{ public_path('gambar_barang/'.$img->inv_id.'/'.$img->gambar) }}"
+                            style="width:48%;height:80px;object-fit:cover;margin:2px;"
+                        >
+                    @endforeach
                 @else
                     <div style="font-style:italic; color:#555;">
                         Foto tidak tersedia
                     </div>
                 @endif
             </div>
-            <div>
-                <small>Foto Barang</small>
-            </div>
+            <small>Foto Barang</small>
         </div>
+
 
         <div class="clearfix"></div>
     </div>

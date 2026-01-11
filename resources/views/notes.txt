@@ -9,3 +9,5 @@ bikin hak akses admin (v)
 - detail barang kurang nama ruangan (v)
 - tambah pemegang  barang (v)
 - BUKU INVENTARIS GABUNGAN -> Kartu Inventaris Ruangan (V)
+
+eko (echoellysa)
