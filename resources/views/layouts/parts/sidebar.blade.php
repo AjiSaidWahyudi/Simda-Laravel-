@@ -1,4 +1,7 @@
 <aside class="sidebar">
+    <button class="sidebar-close d-md-none" id="closeSidebar">
+        <i class="bi bi-x-lg"></i>
+    </button>
     <div class="sidebar-logo">
         <img src="{{asset('admin_simda/logo/logo_white.png')}}" alt="Logo SIMDA">
         <span>SIMDA</span>

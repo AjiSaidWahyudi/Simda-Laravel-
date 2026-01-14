@@ -57,7 +57,7 @@ class InventarisasiController extends Controller
     {
         $validated = $request->validate([
             'kartu_ruang_id' => 'required|exists:kartu_ruang,id',
-            'kode_barang' => 'required|unique',
+            'kode_barang' => 'required|unique:inventarisasi,kode_barang',
             'kode_register' => 'required',
             'jenis_barang' => 'required',
             'nama_pemegang' => 'required',

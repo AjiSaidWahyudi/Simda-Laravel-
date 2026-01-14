@@ -3,7 +3,7 @@
     'name',
     'value' => '',
     'placeholder' => '',
-    'col' => '6',
+    'col' => '12',
 ])
 
 <div class="col-md-{{ $col }}">

@@ -1,5 +1,8 @@
 <nav class="navbar-custom">
     <div class="navbar-left page-info">
+        <button class="btn btn-light d-md-none" id="toggleSidebar">
+            <i class="bi bi-list"></i>
+        </button>
         <h4 class="page-title mb-0">{{ $pageTitle ?? 'Dashboard' }}</h4>
         <nav class="breadcrumb-custom">
             @foreach ($breadcrumb as $item)

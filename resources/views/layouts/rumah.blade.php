@@ -4,6 +4,7 @@
     <body>
         <div class="app-wrapper">
             @include('layouts.parts.sidebar')
+            <div class="sidebar-overlay" id="sidebarOverlay"></div>
             <main class="main">
                 @include('layouts.parts.navbar')
                 <section class="content">

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>SIMDA Barang</title>
-
+    <link rel="icon" type="image/x-icon" href="{{asset('admin_simda/favicon.png')}}">
     <link rel="stylesheet" href="{{ asset('admin_simda/css/welcome.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>

@@ -3,3 +3,4 @@
 <script src="{{asset('admin_simda/js/previewImage.js')}}"></script>
 <script src="{{asset('admin_simda/js/carousel.js')}}"></script>
 <script src="{{asset('admin_simda/js/zoomImage.js')}}"></script>
+<script src="{{asset('admin_simda/js/sidebar.js')}}"></script>

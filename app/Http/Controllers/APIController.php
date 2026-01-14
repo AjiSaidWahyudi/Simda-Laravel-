@@ -95,7 +95,7 @@ class APIController extends Controller
                 return [
                     'id' => $item->id,
                     'jenis_barang' => $item->jenis_barang,
-                    'harga' => $item->harga,
+                    'keadaan' => $item->keadaan,
                     'ruangan' => $item->kartu_ruang->nama_ruangan,
                 ];
             })

@@ -22,8 +22,8 @@
             </div>
             <div class="detail-item">
                 <span class="label">Role</span>
-                <span class="value badge bg-primary">
-                    {{ $user->role->name ?? 'User' }}
+                <span class="value badge bg-primary" style="color: white;">
+                    {{ $user->roles->first()->name ?? 'User' }}
                 </span>
             </div>
         </div>
