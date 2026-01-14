@@ -23,6 +23,30 @@
     color: var(--white);
 }
 
+.sidebar-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255,255,255,.15);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.sidebar-close:hover {
+    background: rgba(255,255,255,.25);
+}
+
+.sidebar-close i {
+    font-size: 18px;
+}
+
 .menu {
     list-style: none;
     padding: 0;
@@ -59,4 +83,30 @@
 .menu-item.active a {
     background: rgba(255, 255, 255, 0.22);
     font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .app-wrapper {
+        display: block;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -260px;
+        width: 260px;
+        height: 100vh;
+        max-width: 80%;
+        z-index: 1050;
+        transition: left .3s ease;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .main {
+        margin-left: 0 !important;
+        width: 100%;
+    }
 }

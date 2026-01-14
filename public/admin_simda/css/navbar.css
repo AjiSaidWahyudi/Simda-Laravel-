@@ -174,3 +174,21 @@
     color: var(--slate-500);
     font-weight: 500;
 }
+
+@media (max-width: 768px) {
+    .navbar-custom {
+        padding: 12px 16px;
+    }
+
+    .navbar-left .breadcrumb-custom {
+        display: none;
+    }
+
+    .page-title {
+        font-size: 16px;
+    }
+
+    .navbar-right {
+        gap: 8px;
+    }
+}

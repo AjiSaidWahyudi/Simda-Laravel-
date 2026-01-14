@@ -1,0 +1,34 @@
+.search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.search-form-inline {
+    display: flex;
+    gap: 10px;
+    width: 380px;
+}
+
+.search-form-inline .form-control {
+    flex: 1;
+}
+
+@media (max-width: 576px) {
+    .search-form-inline {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .search-form-inline .form-control {
+        width: 100%;
+    }
+
+    .search-form-inline button {
+        width: 100%;
+        height: 44px;
+    }
+}

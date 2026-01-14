@@ -1,0 +1,20 @@
+/* Sidebar overlay */
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    z-index: 1040;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s ease;
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Prevent body scroll when sidebar open */
+body.sidebar-open {
+    overflow: hidden;
+}

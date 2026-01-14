@@ -112,3 +112,53 @@ body {
     padding: 40px 30px;
     }
 }
+
+/* Mobile optimizations */
+@media (max-width: 576px) {
+
+    body {
+        padding: 16px;
+        align-items: flex-start;
+    }
+
+    .login-wrapper {
+        max-width: 100%;
+        border-radius: 16px;
+        box-shadow: 0 16px 40px rgba(0,0,0,.2);
+    }
+
+    .login-right {
+        padding: 32px 20px;
+    }
+
+    .login-right h4 {
+        font-size: 18px;
+        margin-bottom: 24px;
+    }
+
+    .login-right img,
+    .login-right .logo {
+        max-width: 72px;
+        margin-bottom: 16px;
+    }
+
+    .form-control,
+    .btn-login {
+        height: 50px;
+        font-size: 15px;
+    }
+
+    .input-group-text {
+        padding: 0 14px;
+    }
+
+    .form-check-label {
+        font-size: 13px;
+    }
+
+    .footer-text {
+        font-size: 12px;
+        margin-top: 20px;
+        padding-bottom: 8px;
+    }
+}

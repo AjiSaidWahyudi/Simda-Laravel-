@@ -1,0 +1,32 @@
+/* ===== STATUS KEADAAN ===== */
+.status-baik {
+    border-left: 6px solid var(--success);
+}
+
+.status-kurang {
+    border-left: 6px solid var(--warning);
+}
+
+.status-rusak {
+    border-left: 6px solid var(--danger);
+}
+
+.status-default {
+    border-left: 6px solid var(--slate-500);
+}
+
+/* biar teksnya ikut “rasa” */
+.status-baik .value {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.status-kurang .value {
+    color: var(--warning);
+    font-weight: 600;
+}
+
+.status-rusak .value {
+    color: var(--danger);
+    font-weight: 600;
+}
