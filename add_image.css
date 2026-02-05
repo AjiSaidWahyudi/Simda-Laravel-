@@ -1,0 +1,59 @@
+.image-dropzone {
+    min-height: 140px;
+    cursor: pointer;
+    background: #fafafa;
+}
+
+.image-dropzone.dragover {
+    border-color: var(--blue-600);
+    background: var(--slate-100);
+}
+
+.image-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--slate-300);
+}
+
+.remove-btn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 22px;
+    height: 22px;
+    border: none;
+    border-radius: 50%;
+    background: var(--danger);
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.add-image {
+    width: 120px;
+    height: 120px;
+    border: 2px dashed var(--slate-300);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: var(--slate-300);
+}
+
+#image-input {
+    position: absolute; /* atau fixed */
+    width: 1px;         /* sangat kecil */
+    height: 1px;
+    opacity: 0;         /* invisible */
+    z-index: -1;        /* di bawah semua elemen */
+}
+
